@@ -5,7 +5,7 @@ import game.MapPosition;
 
 import static java.lang.Math.sqrt;
 
-public abstract class BasePathFinder implements PathFinder {
+public abstract class BasePathFinder {
     private GameMap map;
     private MapPosition position;
 
@@ -20,11 +20,9 @@ public abstract class BasePathFinder implements PathFinder {
         x *= x;
         y = start.getY() - target.getY();
         y *= y;
-
         return (float)sqrt(x+y);
     }
 
-    @Override
     public MapPosition nextMove(MapPosition target) {
         float min;
         int choice;
