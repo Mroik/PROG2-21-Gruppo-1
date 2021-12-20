@@ -36,7 +36,7 @@ public class CompletePathFinder extends BasePathFinder {
     public MapPosition[] getFullPath(MapPosition end) throws NoPathException {
         MapPosition[] result;
 
-        this.current = this.position;
+        this.current = new MapPosition(this.position.getX(), this.position.getY());
         try {
             getFullPathR(this.current);
         } catch (NoPathException e) {

@@ -51,4 +51,12 @@ public abstract class BasePathFinder {
             throw new NoPathException();
         return walkable[choice];
     }
+
+    public MapPosition getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(int x, int y) {
+        this.position = new MapPosition(x, y);
+    }
 }
