@@ -6,45 +6,40 @@ import base_classes.movement.NoPathException;
 import java.util.ArrayList;
 
 public class CompletePathFinder extends BasePathFinder {
-    private MapPosition current;
     private ArrayList<MapPosition> path;
+    private ArrayList<MapPosition> visited;
 
     public CompletePathFinder(GameMap map, int x, int y) {
         super(map, x, y);
-        this.current = null;
         this.path = new ArrayList();
+        this.visited = new ArrayList();
     }
 
-    private void getFullPathR(MapPosition end) throws NoPathException {
-        MapPosition nextPosition;
-
-        if(this.current.equals(end))
-            return;
-        nextPosition = super.nextMove(end);
-        this.path.add(nextPosition);
-        this.current = nextPosition;
-        this.getFullPathR(end);
+    private boolean getFullPathR(MapPosition current, MapPosition end) {
+        visited.add(current);
+        if(current.equals(end))
+            return true;
+        for(MapPosition x:current.getWalkable(this.map)) {
+            if(this.getFullPathR(x, end))
+                return true;
+        }
+        visited.remove(visited.size()-1);
+        return false;
     }
 
     /**
      * Returns the full path that would be used in this instance to get to {@code end}.
      * This method is kept public in case the hypothetical path to take needs to be known.
      *
-     * @param end
+     * @param end The position to arrive to
      * @return
      */
     public MapPosition[] getFullPath(MapPosition end) throws NoPathException {
         MapPosition[] result;
 
-        this.current = new MapPosition(this.position.getX(), this.position.getY());
-        try {
-            getFullPathR(this.current);
-        } catch (NoPathException e) {
-            this.current = null;
-            throw e;
-        }
+        if(!getFullPathR(this.position, end))
+            throw new NoPathException();
 
-        this.current = null;
         result = (MapPosition[])this.path.toArray();
         this.path = new ArrayList();
         return result;
