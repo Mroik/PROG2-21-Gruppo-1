@@ -27,29 +27,29 @@ public abstract class BasePathFinder {
 
     public MapPosition nextMove(MapPosition target) throws NoPathException {
         float min;
-        int choice;
+        MapPosition choice;
         float temp_distance;
         MapPosition[] walkable;
 
-        choice = 0;
         walkable = this.position.getWalkable(this.map);
         if(walkable.length == 0)
             throw new NoPathException();
-        min = distance(walkable[0], target);
+        choice = walkable[0];
+        min = distance(choice, target);
 
-        for(int x = 1; x < walkable.length; x++) {
-            if(walkable[x].equals(this.previousPosition))
+        for(MapPosition x:walkable) {
+            if(x.equals(this.previousPosition))
                 continue;
-            temp_distance = distance(walkable[x], target);
+            temp_distance = distance(x, target);
             if(temp_distance < min) {
                 min = temp_distance;
                 choice = x;
             }
         }
 
-        if(walkable[choice].equals(this.previousPosition))
+        if(choice.equals(this.previousPosition))
             throw new NoPathException();
-        return walkable[choice];
+        return choice;
     }
 
     public MapPosition getPosition() {
@@ -58,5 +58,13 @@ public abstract class BasePathFinder {
 
     public void setPosition(int x, int y) {
         this.position = new MapPosition(x, y);
+    }
+
+    public GameMap getMap() {
+        return map;
+    }
+
+    public void setMap(GameMap map) {
+        this.map = map;
     }
 }

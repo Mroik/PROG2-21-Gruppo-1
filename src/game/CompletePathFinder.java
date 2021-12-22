@@ -9,6 +9,11 @@ public class CompletePathFinder extends BasePathFinder {
     private ArrayList<MapPosition> path;
     private ArrayList<MapPosition> visited;
 
+    /**
+     * @param map The map associated to this pathfinder
+     * @param x
+     * @param y
+     */
     public CompletePathFinder(GameMap map, int x, int y) {
         super(map, x, y);
         this.path = new ArrayList();
@@ -16,14 +21,17 @@ public class CompletePathFinder extends BasePathFinder {
     }
 
     private boolean getFullPathR(MapPosition current, MapPosition end) {
-        visited.add(current);
+        this.visited.add(current);
+        this.path.add(current);
         if(current.equals(end))
             return true;
         for(MapPosition x:current.getWalkable(this.map)) {
+            if(this.visited.contains(x))
+                continue;
             if(this.getFullPathR(x, end))
                 return true;
         }
-        visited.remove(visited.size()-1);
+        this.path.remove(this.path.size()-1);
         return false;
     }
 
@@ -32,7 +40,7 @@ public class CompletePathFinder extends BasePathFinder {
      * This method is kept public in case the hypothetical path to take needs to be known.
      *
      * @param end The position to arrive to
-     * @return
+     * @return The path to take to get to end
      */
     public MapPosition[] getFullPath(MapPosition end) throws NoPathException {
         MapPosition[] result;
@@ -42,6 +50,7 @@ public class CompletePathFinder extends BasePathFinder {
 
         result = (MapPosition[])this.path.toArray();
         this.path = new ArrayList();
+        this.visited = new ArrayList();
         return result;
     }
 
