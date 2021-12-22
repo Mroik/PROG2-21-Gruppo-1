@@ -1,15 +1,24 @@
 package base_classes.movement;
 
+import exceptions.NoPathException;
 import game.GameMap;
 import game.MapPosition;
 
 import static java.lang.Math.sqrt;
 
+/**
+ * The framework of a pathfinder.
+ */
 public abstract class BasePathFinder {
     protected MapPosition previousPosition;
     protected GameMap map;
     protected MapPosition position;
 
+    /**
+     * @param map The map associated with this pathfinder
+     * @param x The starting x coordinate
+     * @param y The starting y coordinate
+     */
     public BasePathFinder(GameMap map, int x, int y) {
         this.map = map;
         this.position = new MapPosition(x, y);
@@ -25,6 +34,13 @@ public abstract class BasePathFinder {
         return (float)sqrt(x+y);
     }
 
+    /**
+     * Returns the next cell the algorithm is going to take to get to target.
+     *
+     * @param target The cell to get to
+     * @return The next cell to move to
+     * @throws NoPathException
+     */
     public MapPosition nextMove(MapPosition target) throws NoPathException {
         float min;
         MapPosition choice;

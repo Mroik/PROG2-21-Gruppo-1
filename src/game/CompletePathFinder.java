@@ -1,18 +1,21 @@
 package game;
 
 import base_classes.movement.BasePathFinder;
-import base_classes.movement.NoPathException;
+import exceptions.NoPathException;
 
 import java.util.ArrayList;
 
+/**
+ * A pathfinder that looks for a path in
+ */
 public class CompletePathFinder extends BasePathFinder {
     private ArrayList<MapPosition> path;
     private ArrayList<MapPosition> visited;
 
     /**
      * @param map The map associated to this pathfinder
-     * @param x
-     * @param y
+     * @param x Starting x coordinate
+     * @param y Starting y coordinate
      */
     public CompletePathFinder(GameMap map, int x, int y) {
         super(map, x, y);
@@ -36,7 +39,7 @@ public class CompletePathFinder extends BasePathFinder {
     }
 
     /**
-     * Returns the full path that would be used in this instance to get to {@code end}.
+     * Returns the full path that would be used in this instance to get to end.
      * This method is kept public in case the hypothetical path to take needs to be known.
      *
      * @param end The position to arrive to

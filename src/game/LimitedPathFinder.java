@@ -1,7 +1,7 @@
 package game;
 
 import base_classes.movement.BasePathFinder;
-import base_classes.movement.NoPathException;
+import exceptions.NoPathException;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,12 @@ public class LimitedPathFinder extends BasePathFinder {
     private int maxLength;
     private ArrayList<MapPosition> path;
 
+    /**
+     * @param map The map associated to this pathfinder
+     * @param x The starting x coordinate
+     * @param y The starting y coordinate
+     * @param maxLength The max amount of cells the algorithm can look ahead
+     */
     public LimitedPathFinder(GameMap map, int x, int y, int maxLength) {
         super(map, x, y);
         this.maxLength = maxLength;
@@ -32,6 +38,11 @@ public class LimitedPathFinder extends BasePathFinder {
         return false;
     }
 
+    /**
+     * @param end The cell to get to
+     * @return The path the algorithm is going to take
+     * @throws NoPathException
+     */
     public MapPosition[] findPath(MapPosition end) throws NoPathException {
         MapPosition[] result;
 
