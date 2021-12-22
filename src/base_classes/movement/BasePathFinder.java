@@ -1,5 +1,6 @@
 package base_classes.movement;
 
+import exceptions.InvalidCoordinatesException;
 import exceptions.NoPathException;
 import game.GameMap;
 import game.MapPosition;
@@ -19,7 +20,7 @@ public abstract class BasePathFinder {
      * @param x The starting x coordinate
      * @param y The starting y coordinate
      */
-    public BasePathFinder(GameMap map, int x, int y) {
+    public BasePathFinder(GameMap map, int x, int y) throws InvalidCoordinatesException {
         this.map = map;
         this.position = new MapPosition(x, y);
         this.previousPosition = null;
@@ -72,7 +73,7 @@ public abstract class BasePathFinder {
         return this.position;
     }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(int x, int y) throws InvalidCoordinatesException {
         this.position = new MapPosition(x, y);
     }
 

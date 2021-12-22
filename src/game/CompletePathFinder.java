@@ -1,6 +1,7 @@
 package game;
 
 import base_classes.movement.BasePathFinder;
+import exceptions.InvalidCoordinatesException;
 import exceptions.NoPathException;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class CompletePathFinder extends BasePathFinder {
      * @param x Starting x coordinate
      * @param y Starting y coordinate
      */
-    public CompletePathFinder(GameMap map, int x, int y) {
+    public CompletePathFinder(GameMap map, int x, int y) throws InvalidCoordinatesException {
         super(map, x, y);
         this.path = new ArrayList();
         this.visited = new ArrayList();

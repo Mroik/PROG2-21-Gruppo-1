@@ -1,6 +1,7 @@
 package game;
 
 import base_classes.movement.BasePathFinder;
+import exceptions.InvalidCoordinatesException;
 import exceptions.NoPathException;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class LimitedPathFinder extends BasePathFinder {
      * @param y The starting y coordinate
      * @param maxLength The max amount of cells the algorithm can look ahead
      */
-    public LimitedPathFinder(GameMap map, int x, int y, int maxLength) {
+    public LimitedPathFinder(GameMap map, int x, int y, int maxLength) throws InvalidCoordinatesException {
         super(map, x, y);
         this.maxLength = maxLength;
         this.path = new ArrayList();

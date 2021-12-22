@@ -1,4 +1,4 @@
-package base_classes.movement;
+package exceptions;
 
 /**
  * Thrown when a path can't be found by a pathfinder.
