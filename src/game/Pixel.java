@@ -1,4 +1,4 @@
-package render;
+package game;
 
 import javax.swing.text.AttributeSet;
 

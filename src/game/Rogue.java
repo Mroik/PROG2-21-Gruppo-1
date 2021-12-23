@@ -1,4 +1,5 @@
-package render;
+package game;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
