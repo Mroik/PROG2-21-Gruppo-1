@@ -84,8 +84,9 @@ public class MainWindow extends JTextPane {
         this.rows = rows;
         this.cols = cols;
 
+        this.changeTime = new Date(System.currentTimeMillis());
         this.initBlankWindow();
-        this.initRenderLoop();
+        this.updateTime = new Date(System.currentTimeMillis());
     }
 
     private void initBlankWindow() {
@@ -105,10 +106,13 @@ public class MainWindow extends JTextPane {
 
     // W IL MULTITHREADING
 
-    private class RenderLoop implements Runnable {
+    public class RenderLoop implements Runnable {
         private MainWindow mw;
 
         private int fps;
+
+        private boolean running = false;
+        private boolean stop = false;
 
         public RenderLoop(MainWindow mw, int fps) {
             this.mw = mw;
@@ -116,23 +120,29 @@ public class MainWindow extends JTextPane {
         }
 
         public void run() {
-            while(true) {
+            if (running) {
+                return;
+            }
+
+            while(!stop) {
                 try { TimeUnit.MILLISECONDS.sleep(1000 / fps); } catch (Exception e) {}
                 mw.renderWindow();
             }
+        }
+
+        public void stop() {
+            stop = true;
         }
     }
 
     // W IL MULTITHREADING
 
-    private void initRenderLoop() {
-        this.changeTime = new Date(System.currentTimeMillis());
-        this.updateTime = new Date(System.currentTimeMillis());
-
-        RenderLoop rl = new RenderLoop(this, 30);
+    public RenderLoop initRenderLoop(int fps) {
+        RenderLoop rl = new RenderLoop(this, fps);
 
         renderer = new Thread(rl, "Render Loop");
         renderer.start();
+        return rl;
     }
 
     public AttributeSet getDefaultAttrSet() {
@@ -155,7 +165,7 @@ public class MainWindow extends JTextPane {
         return matrix;
     }
 
-    private void renderWindow() {
+    public void renderWindow() {
         if (!changeTime.after(updateTime)) {
             return;
         }
@@ -184,6 +194,7 @@ public class MainWindow extends JTextPane {
         }
 
         changeTime = new Date(System.currentTimeMillis());
+        this.renderWindow();
     }
 
     public void updatePixel(int x, int y, char c, Color color) {

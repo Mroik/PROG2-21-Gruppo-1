@@ -77,6 +77,14 @@ public class Rogue {
         mw.updatePixel(x, y, c, color);
     }
 
+    public MainWindow.RenderLoop initRenderLoop(int fps) {
+        return mw.initRenderLoop(fps);
+    }
+
+    public void renderWindow() {
+        mw.renderWindow();
+    }
+
     public int getRows() {
         return mw.getRows();
     }
