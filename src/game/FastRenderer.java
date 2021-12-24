@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +34,25 @@ public class FastRenderer extends DefaultStyledDocument {
         super();
         l = new ArrayList<>();
 
-        // Retreive the text and style matrix
-        List<List<Pixel>> matrix = mw.getMatrix();
+        //
+        List<List<Pixel>> matrix = mw.getCopyOfBase();
+
+        //
+        Levels levels = mw.getLevels();
 
         // Starts the list creation with the default style
-        AttributeSet currentAttr = mw.getDefaultAttrSet();
+        Color currentColor = mw.getDefaultColor();
+        AttributeSet currentAttrSet = mw.getDefaultAttrSet();
+
+        for (int i = 0; i < levels.size(); i++) {
+            List<PosixPixel> changedPixels = levels.getPixels(i);
+
+            for (int j = 0; j < changedPixels.size(); j++) {
+                PosixPixel p = changedPixels.get(j);
+                matrix.get(p.getY()).get(p.getX()).c = p.getChar();
+                matrix.get(p.getY()).get(p.getX()).color = p.getColor();
+            }
+        }
 
         // For every row ...
         for (int i = 0; i < matrix.size(); i++) {
@@ -45,7 +60,7 @@ public class FastRenderer extends DefaultStyledDocument {
             // For every char in the row ...
             for (int j = 0; j < row.size(); j++) {
                 // Updates the current style
-                currentAttr = row.get(j).attr;
+                currentColor = row.get(j).color;
 
                 // Creates a sequence of characters that uses the same
                 // style to make the writing more efficient. This sequence
@@ -54,17 +69,24 @@ public class FastRenderer extends DefaultStyledDocument {
 
                 // Cicles throw the row until the line its finished or the next
                 // character has not the same style
-                while(j+1 < row.size() && matrix.get(i).get(j+1).attr == currentAttr) {
+                while(j+1 < row.size() && matrix.get(i).get(j+1).color == currentColor) {
                     j++;
                     concatRow += String.valueOf(row.get(j).c);
                 }
 
+                currentAttrSet = mw.createColorAttrSet(currentColor);
                 // Appends the sequence with the common style in the list of ElementSpec
-                l.add(new ElementSpec(currentAttr, ElementSpec.ContentType, concatRow.toCharArray(), 0, concatRow.length()));
+                l.add(new ElementSpec(
+                    currentAttrSet,
+                    ElementSpec.ContentType,
+                    concatRow.toCharArray(),
+                    0,
+                    concatRow.length()
+                ));
             }
 
             // Appends a line-feed to the list
-            this.appendLineFeed(currentAttr);
+            this.appendLineFeed(currentAttrSet);
         }
 
         l.remove(l.size() - 1);
@@ -97,6 +119,7 @@ public class FastRenderer extends DefaultStyledDocument {
      */
     private void appendLineFeed(AttributeSet attr) {
         l.add(new ElementSpec(attr, ElementSpec.ContentType, "\n".toCharArray(), 0, 1));
+        
         this.appendEnd(attr);
         this.appendStart();
     }

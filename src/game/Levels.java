@@ -113,17 +113,4 @@ public class Levels {
 
         return s.stripTrailing();
     }
-
-    public static void main(String[] args) {
-        Levels levels = new Levels(3, 30, 120);
-
-        levels.set(0, 4, 3, 'c', Color.black);
-        System.out.println(levels);
-
-        levels.set(1, 4, 3, 'c', Color.red);
-        System.out.println(levels);
-
-        levels.clear();
-        System.out.println(levels);
-    }
 }
