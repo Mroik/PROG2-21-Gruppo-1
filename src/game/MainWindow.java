@@ -25,6 +25,7 @@ public class MainWindow extends JTextPane {
      */
     private AttributeSet defaultAttrSet;
 
+<<<<<<< HEAD
     /**
      * The default color to be used
      */
@@ -39,9 +40,20 @@ public class MainWindow extends JTextPane {
      * 
      */
     private Levels levels;
+=======
+    private Color defaultColor;
+>>>>>>> render-old
 
     /**
-     * The number of lines of the text matrix
+     * The text base made of String but every string MUST BE
+     * of length 1 like a char
+     */
+    private List<List<Pixel>> base;
+
+    private Levels levels;
+
+    /**
+     * The number of lines of the text base
      */
     private int rows;
 
@@ -53,9 +65,11 @@ public class MainWindow extends JTextPane {
     /**
      * The font size to be used.
      * This should not be modified via, the danger is to
-     * destroy the text matrix
+     * destroy the text base
      */
     private int fontSize = 18;
+
+    private RenderLoop rl;
 
     /**
      * Tthe timestamp of the render event. Every time the render
@@ -68,15 +82,15 @@ public class MainWindow extends JTextPane {
 
     /**
      * The timestamp of the change event. Every time a change is
-     * done to the matrix the timestamp changes
+     * done to the base the timestamp changes
      */
     private Date changeTime;
 
     /**
      * Creates a blank uneditable window full of white spaces.
-     * @param color the default color of the text matrix
-     * @param rows the number of lines of the text matrix
-     * @param cols the length of the text matrix except the new-lines
+     * @param color the default color of the text base
+     * @param rows the number of lines of the text base
+     * @param cols the length of the text base except the new-lines
      */
     public MainWindow(final Color color, int rows, int cols) {
         this.setEditable(false);
@@ -85,6 +99,7 @@ public class MainWindow extends JTextPane {
         this.setForeground(color);
         this.defaultColor = color;
         this.defaultAttrSet = this.getLogicalStyle().copyAttributes();
+        this.defaultColor = color;
 
         this.rows = rows;
         this.cols = cols;
@@ -103,23 +118,90 @@ public class MainWindow extends JTextPane {
         this.changeTime = new Date(System.currentTimeMillis());
         this.initBlankWindow();
         this.updateTime = new Date(System.currentTimeMillis());
+
+        initRenderLoop(30);
     }
 
     private void initBlankWindow() {
         String text = "";
-        for (int j = 0; j < this.cols; j++) {
+        for (int j = 0; j < cols; j++) {
             text += " ";
         }
-        for (int i = 1; i < this.rows; i++) {
+        for (int i = 1; i < rows; i++) {
             text += "\n";
-            for (int j = 0; j < this.cols; j++) {
+            for (int j = 0; j < cols; j++) {
                 text += " ";
             }
         }
 
-        this.setText(text);
+        setText(text);
+
+        base = new ArrayList<>(this.rows);
+        for (int i = 0; i < this.rows; i++) {
+            base.add(new ArrayList<>(this.cols));
+            for (int j = 0; j < this.cols; j++) {
+                base.get(i).add(new Pixel(' ', this.defaultColor));
+            }
+        }
+
+        levels = new Levels(3, rows, cols);
     }
 
+<<<<<<< HEAD
+=======
+    // W IL MULTITHREADING
+
+    public class RenderLoop implements Runnable {
+        private MainWindow mw;
+
+        private int fps;
+
+        private boolean running = false;
+        private boolean stop = false;
+
+        public RenderLoop(MainWindow mw, int fps) {
+            this.mw = mw;
+            this.fps = fps;
+        }
+
+        public void run() {
+            if (running) {
+                return;
+            }
+
+            while(!stop) {
+                try { TimeUnit.MILLISECONDS.sleep(1000 / fps); } catch (Exception e) {}
+                mw.renderWindow();
+            }
+        }
+
+        public void stop() {
+            stop = true;
+        }
+    }
+
+    // W IL MULTITHREADING
+
+    public void initRenderLoop(int fps) {
+        if (rl != null) {
+            return;
+        }
+        rl = new RenderLoop(this, fps);
+
+        renderer = new Thread(rl, "Render Loop");
+        renderer.start();
+    }
+
+    public void stopRenderLoop() {
+        if (rl == null) {
+            return;
+        }
+        
+        rl.stop();
+        rl = null;
+    }
+
+>>>>>>> render-old
     public AttributeSet getDefaultAttrSet() {
         return defaultAttrSet;
     }
@@ -132,12 +214,17 @@ public class MainWindow extends JTextPane {
         return sc.addAttribute(attr, name, value);
     }
 
+<<<<<<< HEAD
     public AttributeSet createColorAttrSet(Color color) {
         return sc.addAttribute(
             this.defaultAttrSet,
             StyleConstants.Foreground,
             color
         );
+=======
+    public AttributeSet createColor(Color color) {
+        return sc.addAttribute(defaultAttrSet, StyleConstants.Foreground, color);
+>>>>>>> render-old
     }
 
     public int getRows() {
@@ -148,6 +235,7 @@ public class MainWindow extends JTextPane {
         return cols;
     }
 
+<<<<<<< HEAD
     public List<List<Pixel>> getBase() {
         return base;
     }
@@ -167,6 +255,10 @@ public class MainWindow extends JTextPane {
 
     public Levels getLevels() {
         return levels;
+=======
+    public List<List<Pixel>> getbase() {
+        return base;
+>>>>>>> render-old
     }
 
     public void renderWindow() {
@@ -177,8 +269,7 @@ public class MainWindow extends JTextPane {
         try {
             updateTime = new Date(changeTime.getTime());
 
-            final MainWindow mwCopy = this;
-            FastRenderer fr = new FastRenderer(mwCopy);
+            FastRenderer fr = new FastRenderer(this, this.base, this.levels);
 
             try { TimeUnit.NANOSECONDS.sleep(1); } catch (Exception e) {}
 
@@ -189,9 +280,15 @@ public class MainWindow extends JTextPane {
     }
 
     public void createWindow() {
+<<<<<<< HEAD
         for (List<Pixel> row : base) {
             for (Pixel p : row) {
                 p.c = '#';
+=======
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                base.get(i).get(j).c = '#';
+>>>>>>> render-old
             }
         }
 
@@ -199,8 +296,20 @@ public class MainWindow extends JTextPane {
         this.renderWindow();
     }
 
+<<<<<<< HEAD
     public void updatePixel(int nLevel, int x, int y, char c, Color color) {
         levels.set(nLevel, x, y, c, color);
+=======
+    public void updateBase(int x, int y, char c, Color color) {
+        base.get(y).get(x).c = c;
+        base.get(y).get(x).color = color;
+
+        changeTime = new Date(System.currentTimeMillis());
+    }
+
+    public void updateLevel(int level, int x, int y, char c, Color color) {
+        levels.addPixelLevel(level, x, y, c, color);
+>>>>>>> render-old
 
         changeTime = new Date(System.currentTimeMillis());
     }

@@ -30,10 +30,10 @@ public class FastRenderer extends DefaultStyledDocument {
      * @param mw the MainWindow with its text and style matrix
      * @throws BadLocationException
      */
-    public FastRenderer(MainWindow mw) throws BadLocationException {
-        super();
+    public FastRenderer(MainWindow mw, List<List<Pixel>> matrix, Levels levels) throws BadLocationException {
         l = new ArrayList<>();
 
+<<<<<<< HEAD
         //
         List<List<Pixel>> matrix = mw.getCopyOfBase();
 
@@ -87,10 +87,60 @@ public class FastRenderer extends DefaultStyledDocument {
 
             // Appends a line-feed to the list
             this.appendLineFeed(currentAttrSet);
+=======
+        Color currentColor = mw.getDefaultColor();
+        AttributeSet currentAttrSet = mw.createColor(currentColor);
+        String concatRow = "";
+
+        for (int y = 0; y < matrix.size(); y++) {
+            List<Pixel> row = matrix.get(y);
+            
+            for (int x = 0; x < row.size(); x++) {
+                char c = row.get(x).c;
+                Color color = row.get(x).color;
+
+                Coordinate coord = new Coordinate(x, y);
+                if (levels.containsKey(coord)) {
+                    LevelPixel p = levels.get(coord);
+                    c = p.c;
+                    color = p.color;
+                }
+
+                if (color == currentColor) {
+                    concatRow += String.valueOf(c);
+                } else {
+                    if (concatRow != "") {
+                        l.add(new ElementSpec(
+                            currentAttrSet,
+                            ElementSpec.ContentType,
+                            concatRow.toCharArray(),
+                            0, concatRow.length())
+                        );
+                    }
+
+                    concatRow = String.valueOf(c);
+                    currentColor = color;
+                    currentAttrSet = mw.createColor(currentColor);
+                }
+            }
+
+            concatRow += "\n";
+            l.add(new ElementSpec(
+                currentAttrSet,
+                ElementSpec.ContentType,
+                concatRow.toCharArray(),
+                0, concatRow.length())
+            );
+
+            appendEnd(currentAttrSet);
+            appendStart();
+
+            concatRow = "";
+>>>>>>> render-old
         }
 
         l.remove(l.size() - 1);
-        this.createDocument();
+        createDocument();
     }
 
     /**
@@ -112,6 +162,7 @@ public class FastRenderer extends DefaultStyledDocument {
     }
 
     /**
+<<<<<<< HEAD
      * Appends a line-feed in the list of ElementSpec. For optimal
      * use the attr style should be the same style as the previous
      * char at the end of the line
@@ -125,6 +176,8 @@ public class FastRenderer extends DefaultStyledDocument {
     }
 
     /**
+=======
+>>>>>>> render-old
      * Writes into the document the list of ElementSpec
      * @throws BadLocationException
      */

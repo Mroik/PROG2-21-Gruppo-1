@@ -11,11 +11,14 @@ public class Pixel {
     public Pixel(char c, Color color) {
         this.c = c;
         this.color = color;
+<<<<<<< HEAD
     }
 
     @Override
     public String toString() {
         return "Character: '" + c + "' - Color: RGB( " + color.getRed() + " ; " + color.getGreen() + " ; " + color.getBlue() + " )";
+=======
+>>>>>>> render-old
     }
 
 }
