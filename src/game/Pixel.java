@@ -1,16 +1,16 @@
 package game;
 
-import javax.swing.text.AttributeSet;
+import java.awt.Color;
 
 public class Pixel {
 
     public char c;
 
-    public AttributeSet attr;
+    public Color color;
 
-    public Pixel(char c, AttributeSet attr) {
+    public Pixel(char c, Color color) {
         this.c = c;
-        this.attr = attr;
+        this.color = color;
     }
 
 }

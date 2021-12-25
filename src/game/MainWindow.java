@@ -25,14 +25,18 @@ public class MainWindow extends JTextPane {
      */
     private AttributeSet defaultAttrSet;
 
-    /**
-     * The text matrix made of String but every string MUST BE
-     * of length 1 like a char
-     */
-    private List<List<Pixel>> matrix;
+    private Color defaultColor;
 
     /**
-     * The number of lines of the text matrix
+     * The text base made of String but every string MUST BE
+     * of length 1 like a char
+     */
+    private List<List<Pixel>> base;
+
+    private Levels levels;
+
+    /**
+     * The number of lines of the text base
      */
     private int rows;
 
@@ -44,9 +48,11 @@ public class MainWindow extends JTextPane {
     /**
      * The font size to be used.
      * This should not be modified via, the danger is to
-     * destroy the text matrix
+     * destroy the text base
      */
     private int fontSize = 18;
+
+    private RenderLoop rl;
 
     /**
      * The thread reponsible for the window rendering loop
@@ -64,15 +70,15 @@ public class MainWindow extends JTextPane {
 
     /**
      * The timestamp of the change event. Every time a change is
-     * done to the matrix the timestamp changes
+     * done to the base the timestamp changes
      */
     private Date changeTime;
 
     /**
      * Creates a blank uneditable window full of white spaces.
-     * @param color the default color of the text matrix
-     * @param rows the number of lines of the text matrix
-     * @param cols the length of the text matrix except the new-lines
+     * @param color the default color of the text base
+     * @param rows the number of lines of the text base
+     * @param cols the length of the text base except the new-lines
      */
     public MainWindow(Color color, int rows, int cols) {
         this.setEditable(false);
@@ -80,6 +86,7 @@ public class MainWindow extends JTextPane {
         this.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
         this.setForeground(color);
         this.defaultAttrSet = this.getLogicalStyle().copyAttributes();
+        this.defaultColor = color;
 
         this.rows = rows;
         this.cols = cols;
@@ -87,21 +94,33 @@ public class MainWindow extends JTextPane {
         this.changeTime = new Date(System.currentTimeMillis());
         this.initBlankWindow();
         this.updateTime = new Date(System.currentTimeMillis());
+
+        initRenderLoop(30);
     }
 
     private void initBlankWindow() {
         String text = "";
-        for (int j = 0; j < this.cols; j++) {
+        for (int j = 0; j < cols; j++) {
             text += " ";
         }
-        for (int i = 1; i < this.rows; i++) {
+        for (int i = 1; i < rows; i++) {
             text += "\n";
-            for (int j = 0; j < this.cols; j++) {
+            for (int j = 0; j < cols; j++) {
                 text += " ";
             }
         }
 
-        this.setText(text);
+        setText(text);
+
+        base = new ArrayList<>(this.rows);
+        for (int i = 0; i < this.rows; i++) {
+            base.add(new ArrayList<>(this.cols));
+            for (int j = 0; j < this.cols; j++) {
+                base.get(i).add(new Pixel(' ', this.defaultColor));
+            }
+        }
+
+        levels = new Levels(3, rows, cols);
     }
 
     // W IL MULTITHREADING
@@ -137,20 +156,39 @@ public class MainWindow extends JTextPane {
 
     // W IL MULTITHREADING
 
-    public RenderLoop initRenderLoop(int fps) {
-        RenderLoop rl = new RenderLoop(this, fps);
+    public void initRenderLoop(int fps) {
+        if (rl != null) {
+            return;
+        }
+        rl = new RenderLoop(this, fps);
 
         renderer = new Thread(rl, "Render Loop");
         renderer.start();
-        return rl;
+    }
+
+    public void stopRenderLoop() {
+        if (rl == null) {
+            return;
+        }
+        
+        rl.stop();
+        rl = null;
     }
 
     public AttributeSet getDefaultAttrSet() {
         return defaultAttrSet;
     }
 
+    public Color getDefaultColor() {
+        return defaultColor;
+    }
+
     public AttributeSet createAttrSet(AttributeSet attr, Object name, Object value) {
         return sc.addAttribute(attr, name, value);
+    }
+
+    public AttributeSet createColor(Color color) {
+        return sc.addAttribute(defaultAttrSet, StyleConstants.Foreground, color);
     }
 
     public int getRows() {
@@ -161,8 +199,8 @@ public class MainWindow extends JTextPane {
         return cols;
     }
 
-    public List<List<Pixel>> getMatrix() {
-        return matrix;
+    public List<List<Pixel>> getbase() {
+        return base;
     }
 
     public void renderWindow() {
@@ -173,8 +211,7 @@ public class MainWindow extends JTextPane {
         try {
             updateTime = new Date(changeTime.getTime());
 
-            final MainWindow mwCopy = this;
-            FastRenderer fr = new FastRenderer(mwCopy);
+            FastRenderer fr = new FastRenderer(this, this.base, this.levels);
 
             try { TimeUnit.NANOSECONDS.sleep(1); } catch (Exception e) {}
 
@@ -185,11 +222,9 @@ public class MainWindow extends JTextPane {
     }
 
     public void createWindow() {
-        matrix = new ArrayList<>(this.rows);
         for (int i = 0; i < this.rows; i++) {
-            matrix.add(new ArrayList<>(this.cols));
             for (int j = 0; j < this.cols; j++) {
-                matrix.get(i).add(new Pixel('#', this.defaultAttrSet));
+                base.get(i).get(j).c = '#';
             }
         }
 
@@ -197,9 +232,15 @@ public class MainWindow extends JTextPane {
         this.renderWindow();
     }
 
-    public void updatePixel(int x, int y, char c, Color color) {
-        matrix.get(y).get(x).c = c;
-        matrix.get(y).get(x).attr = this.createAttrSet(this.defaultAttrSet, StyleConstants.Foreground, color);
+    public void updateBase(int x, int y, char c, Color color) {
+        base.get(y).get(x).c = c;
+        base.get(y).get(x).color = color;
+
+        changeTime = new Date(System.currentTimeMillis());
+    }
+
+    public void updateLevel(int level, int x, int y, char c, Color color) {
+        levels.addPixelLevel(level, x, y, c, color);
 
         changeTime = new Date(System.currentTimeMillis());
     }

@@ -73,12 +73,20 @@ public class Rogue {
         mw.createWindow();
     }
 
-    public void updatePixel(int x, int y, char c, Color color) {
-        mw.updatePixel(x, y, c, color);
+    public void updateBase(int x, int y, char c, Color color) {
+        mw.updateBase(x, y, c, color);
     }
 
-    public MainWindow.RenderLoop initRenderLoop(int fps) {
-        return mw.initRenderLoop(fps);
+    public void updateLevel(int level, int x, int y, char c, Color color) {
+        mw.updateLevel(level, x, y, c, color);
+    }
+
+    public void initRenderLoop(int fps) {
+        mw.initRenderLoop(fps);
+    }
+
+    public void stopRenderLoop() {
+        mw.stopRenderLoop();
     }
 
     public void renderWindow() {
