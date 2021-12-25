@@ -25,24 +25,7 @@ public class MainWindow extends JTextPane {
      */
     private AttributeSet defaultAttrSet;
 
-<<<<<<< HEAD
-    /**
-     * The default color to be used
-     */
     private Color defaultColor;
-
-    /**
-     * 
-     */
-    private List<List<Pixel>> base;
-
-    /**
-     * 
-     */
-    private Levels levels;
-=======
-    private Color defaultColor;
->>>>>>> render-old
 
     /**
      * The text base made of String but every string MUST BE
@@ -70,6 +53,11 @@ public class MainWindow extends JTextPane {
     private int fontSize = 18;
 
     private RenderLoop rl;
+
+    /**
+     * The thread reponsible for the window rendering loop
+     */
+    private Thread renderer;
 
     /**
      * Tthe timestamp of the render event. Every time the render
@@ -147,8 +135,6 @@ public class MainWindow extends JTextPane {
         levels = new Levels(3, rows, cols);
     }
 
-<<<<<<< HEAD
-=======
     // W IL MULTITHREADING
 
     public class RenderLoop implements Runnable {
@@ -201,7 +187,6 @@ public class MainWindow extends JTextPane {
         rl = null;
     }
 
->>>>>>> render-old
     public AttributeSet getDefaultAttrSet() {
         return defaultAttrSet;
     }
@@ -214,17 +199,8 @@ public class MainWindow extends JTextPane {
         return sc.addAttribute(attr, name, value);
     }
 
-<<<<<<< HEAD
-    public AttributeSet createColorAttrSet(Color color) {
-        return sc.addAttribute(
-            this.defaultAttrSet,
-            StyleConstants.Foreground,
-            color
-        );
-=======
     public AttributeSet createColor(Color color) {
         return sc.addAttribute(defaultAttrSet, StyleConstants.Foreground, color);
->>>>>>> render-old
     }
 
     public int getRows() {
@@ -235,30 +211,8 @@ public class MainWindow extends JTextPane {
         return cols;
     }
 
-<<<<<<< HEAD
-    public List<List<Pixel>> getBase() {
-        return base;
-    }
-
-    public List<List<Pixel>> getCopyOfBase() {
-        List<List<Pixel>> copy = new ArrayList<>(this.rows);
-        for (int i = 0; i < this.rows; i++) {
-            copy.add(new ArrayList<>(this.cols));
-
-            for (int j = 0; j < this.cols; j++) {
-                copy.get(i).add(new Pixel(this.base.get(i).get(j).c, this.base.get(i).get(j).color));
-            }
-        }
-
-        return copy;
-    }
-
-    public Levels getLevels() {
-        return levels;
-=======
     public List<List<Pixel>> getbase() {
         return base;
->>>>>>> render-old
     }
 
     public void renderWindow() {
@@ -280,15 +234,9 @@ public class MainWindow extends JTextPane {
     }
 
     public void createWindow() {
-<<<<<<< HEAD
-        for (List<Pixel> row : base) {
-            for (Pixel p : row) {
-                p.c = '#';
-=======
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < this.cols; j++) {
                 base.get(i).get(j).c = '#';
->>>>>>> render-old
             }
         }
 
@@ -296,10 +244,6 @@ public class MainWindow extends JTextPane {
         this.renderWindow();
     }
 
-<<<<<<< HEAD
-    public void updatePixel(int nLevel, int x, int y, char c, Color color) {
-        levels.set(nLevel, x, y, c, color);
-=======
     public void updateBase(int x, int y, char c, Color color) {
         base.get(y).get(x).c = c;
         base.get(y).get(x).color = color;
@@ -309,7 +253,6 @@ public class MainWindow extends JTextPane {
 
     public void updateLevel(int level, int x, int y, char c, Color color) {
         levels.addPixelLevel(level, x, y, c, color);
->>>>>>> render-old
 
         changeTime = new Date(System.currentTimeMillis());
     }

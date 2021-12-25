@@ -33,61 +33,6 @@ public class FastRenderer extends DefaultStyledDocument {
     public FastRenderer(MainWindow mw, List<List<Pixel>> matrix, Levels levels) throws BadLocationException {
         l = new ArrayList<>();
 
-<<<<<<< HEAD
-        //
-        List<List<Pixel>> matrix = mw.getCopyOfBase();
-
-        //
-        Levels levels = mw.getLevels();
-
-        // Starts the list creation with the default style
-        Color currentColor = mw.getDefaultColor();
-        AttributeSet currentAttrSet = mw.getDefaultAttrSet();
-
-        for (int i = 0; i < levels.size(); i++) {
-            List<PosixPixel> changedPixels = levels.getPixels(i);
-
-            for (int j = 0; j < changedPixels.size(); j++) {
-                PosixPixel p = changedPixels.get(j);
-                matrix.get(p.getY()).get(p.getX()).c = p.getChar();
-                matrix.get(p.getY()).get(p.getX()).color = p.getColor();
-            }
-        }
-
-        // For every row ...
-        for (int i = 0; i < matrix.size(); i++) {
-            List<Pixel> row = matrix.get(i);
-            // For every char in the row ...
-            for (int j = 0; j < row.size(); j++) {
-                // Updates the current style
-                currentColor = row.get(j).color;
-
-                // Creates a sequence of characters that uses the same
-                // style to make the writing more efficient. This sequence
-                // starts with "row.get(j) character"
-                String concatRow = String.valueOf(row.get(j).c);
-
-                // Cicles throw the row until the line its finished or the next
-                // character has not the same style
-                while(j+1 < row.size() && matrix.get(i).get(j+1).color == currentColor) {
-                    j++;
-                    concatRow += String.valueOf(row.get(j).c);
-                }
-
-                currentAttrSet = mw.createColorAttrSet(currentColor);
-                // Appends the sequence with the common style in the list of ElementSpec
-                l.add(new ElementSpec(
-                    currentAttrSet,
-                    ElementSpec.ContentType,
-                    concatRow.toCharArray(),
-                    0,
-                    concatRow.length()
-                ));
-            }
-
-            // Appends a line-feed to the list
-            this.appendLineFeed(currentAttrSet);
-=======
         Color currentColor = mw.getDefaultColor();
         AttributeSet currentAttrSet = mw.createColor(currentColor);
         String concatRow = "";
@@ -136,7 +81,6 @@ public class FastRenderer extends DefaultStyledDocument {
             appendStart();
 
             concatRow = "";
->>>>>>> render-old
         }
 
         l.remove(l.size() - 1);
@@ -162,22 +106,6 @@ public class FastRenderer extends DefaultStyledDocument {
     }
 
     /**
-<<<<<<< HEAD
-     * Appends a line-feed in the list of ElementSpec. For optimal
-     * use the attr style should be the same style as the previous
-     * char at the end of the line
-     * @param attr the style to give to the new-line character
-     */
-    private void appendLineFeed(AttributeSet attr) {
-        l.add(new ElementSpec(attr, ElementSpec.ContentType, "\n".toCharArray(), 0, 1));
-        
-        this.appendEnd(attr);
-        this.appendStart();
-    }
-
-    /**
-=======
->>>>>>> render-old
      * Writes into the document the list of ElementSpec
      * @throws BadLocationException
      */

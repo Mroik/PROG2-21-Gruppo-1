@@ -73,10 +73,6 @@ public class Rogue {
         mw.createWindow();
     }
 
-<<<<<<< HEAD
-    public void updatePixel(int nLevel, int x, int y, char c, Color color) {
-        mw.updatePixel(nLevel, x, y, c, color);
-=======
     public void updateBase(int x, int y, char c, Color color) {
         mw.updateBase(x, y, c, color);
     }
@@ -91,7 +87,6 @@ public class Rogue {
 
     public void stopRenderLoop() {
         mw.stopRenderLoop();
->>>>>>> render-old
     }
 
     public void renderWindow() {
