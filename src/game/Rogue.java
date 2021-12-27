@@ -11,6 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+// FOR TEST AND DEBUG SECTION
+import java.util.concurrent.TimeUnit;
+
 public class Rogue {
 
     /**
@@ -100,4 +103,46 @@ public class Rogue {
     public int getCols() {
         return mw.getCols();
     }
+
+    //
+    // TEST AND DEBUG
+    //
+    /* public static void main(String[] args) {
+        Rogue game = new Rogue("Rogue", 30, 120);
+
+        test(game);
+    }
+
+    public static void test(Rogue game) {
+        try { TimeUnit.SECONDS.sleep(2); } catch (Exception e) {}
+
+        for (int i = 0; i < 10000000; i++) {
+            int x = i % game.getCols();
+            int y = (i / game.getCols()) % game.getRows();
+
+            Color color = Color.black;
+            switch ((i / (game.getCols() / 16)) % 7) {
+                case 1:
+                    color = Color.blue;
+                    break;
+                case 2:
+                    color = Color.red;
+                    break;
+                case 3:
+                    color = Color.green;
+                    break;
+                case 4:
+                    color = Color.orange;
+                    break;
+                case 5:
+                    color = Color.pink;
+                    break;
+                case 6:
+                    color = Color.yellow;
+                    break;
+            }
+
+            game.updateLevel(0, x, y, '@', color);
+        }
+    } */
 }
