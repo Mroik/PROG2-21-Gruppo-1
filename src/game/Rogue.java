@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class Rogue {
 
     /**
-     * Its the JTextPane window responsible for the text matrix
+     * Its the JTextPane window responsible for the game display
      */
     private MainWindow mw;
     
@@ -59,7 +59,7 @@ public class Rogue {
         mw = new MainWindow(Color.black, rows, cols);
         mw.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Creates the JTextPane container
+        // Creates the JTextPane container and makes it unscrollable
         JScrollPane sp = new JScrollPane(mw);
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -70,10 +70,6 @@ public class Rogue {
         frame.setVisible(false);
         frame.add(sp, new GridBagConstraints());
         frame.setVisible(true);
-
-        // Optional function, this overrides the default text matrix (made of blank spaces)
-        // with a grid full of '#'
-        mw.createWindow();
     }
 
     public void updateBase(int x, int y, char c, Color color) {
@@ -107,9 +103,10 @@ public class Rogue {
     //
     // TEST AND DEBUG
     //
-    /* public static void main(String[] args) {
+    public static void main(String[] args) {
         Rogue game = new Rogue("Rogue", 30, 120);
 
+        createWindow(game);
         test(game);
     }
 
@@ -144,5 +141,13 @@ public class Rogue {
 
             game.updateLevel(0, x, y, '@', color);
         }
-    } */
+    }
+
+    public static void createWindow(Rogue game) {
+        for (int y = 0; y < game.getRows(); y++) {
+            for (int x = 0; x < game.getCols(); x++) {
+                game.updateBase(x, y, '#', null);
+            }
+        }
+    }
 }

@@ -233,20 +233,10 @@ public class MainWindow extends JTextPane {
         }
     }
 
-    public void createWindow() {
-        for (int i = 0; i < this.rows; i++) {
-            for (int j = 0; j < this.cols; j++) {
-                base.get(i).get(j).c = '#';
-            }
-        }
-
-        changeTime = new Date(System.currentTimeMillis());
-        this.renderWindow();
-    }
-
     public void updateBase(int x, int y, char c, Color color) {
         base.get(y).get(x).c = c;
-        base.get(y).get(x).color = color;
+        if (color != null)
+            base.get(y).get(x).color = color;
 
         changeTime = new Date(System.currentTimeMillis());
     }
