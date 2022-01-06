@@ -1,5 +1,7 @@
+package base_classes;
+
 /**
- * OVERVIEW: Instances of this class represent entities of the game, such as enemies, the player,
+ * OVERVIEW: Instances of subclasses of this class represent entities of the game, such as enemies, the player,
  * collectible objects, etc...
  */
 public abstract class Entity {
@@ -15,7 +17,7 @@ public abstract class Entity {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public Entity(int x, int y) {
+    protected Entity(int x, int y) {
         this.x = x;
         this.y = y;
     }

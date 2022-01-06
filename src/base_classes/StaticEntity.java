@@ -1,5 +1,7 @@
+package base_classes;
+
 /**
- * OVERVIEW: Instances of this class represent non-moving objects in the dungeon, such as pillars
+ * OVERVIEW: Instances of subclasses this class represent non-moving objects in the dungeon, such as pillars
  */
 public abstract class StaticEntity extends Entity {
     
@@ -10,7 +12,7 @@ public abstract class StaticEntity extends Entity {
      * @param x coordinate x
      * @param y coordinate y
      */
-    public StaticEntity(int x, int y) {
+    protected StaticEntity(int x, int y) {
         super(x, y);
     }
 }

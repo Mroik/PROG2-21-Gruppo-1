@@ -1,5 +1,7 @@
+package base_classes;
+
 /**
- * OVERVIEW: Instances of this class represent portions of food that the player may eat
+ * OVERVIEW: Instances of subclasses of this class represent several foods that the player may eat
  */
 public abstract class Food extends Collectible implements Eatable, Stackable {
 
@@ -14,7 +16,7 @@ public abstract class Food extends Collectible implements Eatable, Stackable {
      * @param y coordinate y
      * @param quantity 
      */
-    public Food(int x, int y, int quantity) {
+    protected Food(int x, int y, int quantity) {
         super(x, y);
         this.quantity = quantity;
         render = ':';

@@ -1,5 +1,7 @@
+package base_classes;
+
 /**
- * OVERVIEW: Instances of this class represents collectible objects like gold or weapons, potions and other
+ * OVERVIEW: Instances of subclasses of this class represents collectible objects like gold or weapons, potions and other
  * things that go in your inventory
  */
 public abstract class Collectible extends Entity {
@@ -22,7 +24,7 @@ public abstract class Collectible extends Entity {
      * @param x Coordinate x
      * @param y Coordinate y
      */
-    public Collectible(int x, int y) {
+    protected Collectible(int x, int y) {
         super(x, y);
     }
 

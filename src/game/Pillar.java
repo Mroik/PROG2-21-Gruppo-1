@@ -1,3 +1,10 @@
+package game;
+
+import base_classes;
+
+/**
+ * OVERVIEW: Instances of this class represent pillars which the player may find inside some rooms of the dungeon
+ */
 public class Pillar extends StaticEntity {
     
     // CONSTRUCTOR
@@ -9,5 +16,6 @@ public class Pillar extends StaticEntity {
      */
     public Pillar(int x, int y) {
         super(x, y);
+        render = '|';
     }
 }

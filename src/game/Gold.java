@@ -1,5 +1,9 @@
+package game;
+
+import base_classes;
+
 /**
- * OVERVIEW: Instances of this class represent piles of gold coins you can find around the dungeon.
+ * OVERVIEW: Instances of this class represent piles of gold coins that the player can find around the dungeon.
  */
 public class Gold extends Collectible implements Stackable {
 
@@ -16,6 +20,7 @@ public class Gold extends Collectible implements Stackable {
     public Gold(int x, int y, int quantity) {
         super(x, y);
         this.quantity = quantity;
+        render = '*';
     }
 
     // METHODS

@@ -1,3 +1,8 @@
+package base_classes;
+
+/**
+ * OVERVIEW: Instances of subclasses this class represent weapons that the player can use to fight enemies in the dungeon
+ */
 public abstract class Weapon extends Collectible {
 
     protected boolean isMeleeWeapon;
@@ -11,7 +16,7 @@ public abstract class Weapon extends Collectible {
      * @param x Coordinate x
      * @param y Coordinate y
      */
-    public Weapon(int x, int y) {
+    protected Weapon(int x, int y) {
         super(x, y);
         render = '/';
         this.canEat = false;

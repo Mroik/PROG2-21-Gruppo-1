@@ -1,3 +1,10 @@
+package game;
+
+import base_classes;
+
+/**
+ * OVERVIEW: A banana is a fruit, it satiates the player's hunger by a small amount
+ */
 public class Banana extends Food {
     
     // CONSTRUCTOR
