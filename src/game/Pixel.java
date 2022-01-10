@@ -13,4 +13,9 @@ public class Pixel {
         this.color = color;
     }
 
+    @Override
+    public String toString() {
+        return "'" + c + "' RGB(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ")";
+    }
+
 }

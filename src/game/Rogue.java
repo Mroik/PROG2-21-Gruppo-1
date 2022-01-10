@@ -11,8 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-// FOR TEST AND DEBUG SECTION
-import java.util.concurrent.TimeUnit;
+import map.Map;
 
 public class Rogue {
 
@@ -24,7 +23,7 @@ public class Rogue {
     /**
      * Creates the Game Window and every loop
      * @param title the title of the window
-     * @param rows the number of rows the text window has
+     * @param rows the number of rows of text
      * @param cols the length of each row of the text window
      */
     public Rogue(String title, int rows, int cols) {
@@ -70,8 +69,21 @@ public class Rogue {
         frame.setVisible(false);
         frame.add(sp, new GridBagConstraints());
         frame.setVisible(true);
+
+        this.map = mw.map;
     }
 
+    /**
+     * Modifies the base matrix with a character in the given position
+     * of the matrix. For reference the matrix has the top-left corner
+     * in ( 0 , 0 ) and the bottom-right in ( getCols() - 1 , getRows() - 1 ).
+     * The color can be null: in this case the old color will be used as
+     * the new one.
+     * @param x
+     * @param y
+     * @param c
+     * @param color
+     */
     public void updateBase(int x, int y, char c, Color color) {
         mw.updateBase(x, y, c, color);
     }
@@ -100,54 +112,22 @@ public class Rogue {
         return mw.getCols();
     }
 
+    public Map map;
+
     //
     // TEST AND DEBUG
     //
     public static void main(String[] args) {
-        Rogue game = new Rogue("Rogue", 30, 120);
+        Rogue game = new Rogue("Rogue", 70, 240);
 
-        createWindow(game);
         test(game);
     }
 
     public static void test(Rogue game) {
-        try { TimeUnit.SECONDS.sleep(2); } catch (Exception e) {}
+        Map map = game.map;
 
-        for (int i = 0; i < 10000000; i++) {
-            int x = i % game.getCols();
-            int y = (i / game.getCols()) % game.getRows();
-
-            Color color = Color.black;
-            switch ((i / (game.getCols() / 16)) % 7) {
-                case 1:
-                    color = Color.blue;
-                    break;
-                case 2:
-                    color = Color.red;
-                    break;
-                case 3:
-                    color = Color.green;
-                    break;
-                case 4:
-                    color = Color.orange;
-                    break;
-                case 5:
-                    color = Color.pink;
-                    break;
-                case 6:
-                    color = Color.yellow;
-                    break;
-            }
-
-            game.updateLevel(0, x, y, '@', color);
-        }
-    }
-
-    public static void createWindow(Rogue game) {
-        for (int y = 0; y < game.getRows(); y++) {
-            for (int x = 0; x < game.getCols(); x++) {
-                game.updateBase(x, y, '#', null);
-            }
+        for (CoordinatePixel p : map) {
+            game.updateBase(p.getX(), p.getY(), p.c, p.color);
         }
     }
 }

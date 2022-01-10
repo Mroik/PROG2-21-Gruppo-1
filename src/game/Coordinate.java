@@ -10,6 +10,14 @@ public class Coordinate implements Comparable<Coordinate> {
         this.y = y;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     @Override
     public int compareTo(Coordinate o) {
         if (this.y != o.y) {
@@ -17,5 +25,22 @@ public class Coordinate implements Comparable<Coordinate> {
         }
 
         return this.x - o.x;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Coordinate))
+            return false;
+        
+        Coordinate other = (Coordinate) o;
+
+        //System.out.println(this.x + " - " + other.x + " | " + this.y + " - " + other.y);
+
+        return this.x == other.x && this.y == other.y;
+    }
+
+    @Override
+    public String toString() {
+        return "( " + x + " , " + y + " )";
     }
 }

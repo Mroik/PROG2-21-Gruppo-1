@@ -13,6 +13,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
+import map.Map;
+
 public class MainWindow extends JTextPane {
 
     /**
@@ -50,7 +52,7 @@ public class MainWindow extends JTextPane {
      * This should not be modified via, the danger is to
      * destroy the text base
      */
-    private int fontSize = 18;
+    private int fontSize = 12;
 
     private RenderLoop rl;
 
@@ -92,20 +94,13 @@ public class MainWindow extends JTextPane {
         this.rows = rows;
         this.cols = cols;
 
-        base = new ArrayList<>(this.rows);
-        for (int i = 0; i < this.rows; i++) {
-            base.add(new ArrayList<>(this.cols));
-
-            for (int j = 0; j < this.cols; j++) {
-                base.get(i).add(new Pixel(' ', color));
-            }
-        }
-
         levels = new Levels(3, rows, cols);
 
         this.changeTime = new Date(System.currentTimeMillis());
         this.initBlankWindow();
         this.updateTime = new Date(System.currentTimeMillis());
+
+        populateBase();
 
         initRenderLoop(30);
     }
@@ -135,7 +130,11 @@ public class MainWindow extends JTextPane {
         levels = new Levels(3, rows, cols);
     }
 
-    // W IL MULTITHREADING
+    public Map map;
+
+    private void populateBase() {
+        map = new Map();
+    }
 
     public class RenderLoop implements Runnable {
         private MainWindow mw;
