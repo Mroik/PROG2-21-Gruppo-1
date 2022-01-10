@@ -29,7 +29,7 @@ public abstract class Entity {
      * @return this.x
      */
     public int getX() {
-        return this.x;
+        return x;
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class Entity {
      * @return this.y
      */
     public int getY() {
-        return this.y;
+        return y;
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class Entity {
      * @return this.name
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class Entity {
      * @return this.render
      */
     public char getRender() {
-        return this.render;
+        return render;
     }
 
     /**

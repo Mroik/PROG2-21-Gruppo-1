@@ -6,10 +6,6 @@ package base_classes;
  */
 public abstract class Collectible extends Entity {
 
-    // Number of units of the collectible
-    // Ex: how much gold you will pick up, how many potions, etc
-    protected int quantity;
-
     // Qualities a collectible can have, each one corresponds to a specific command
     protected boolean canEat;
     protected boolean canRead;

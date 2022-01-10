@@ -18,11 +18,11 @@ public class Armor extends Collectible {
     protected Armor(int x, int y) {
         super(x, y);
         render = ']';
-        this.canEat = false;
-        this.canRead = false;
-        this.canQuaff = false;
-        this.canWield = true;
-        this.canWear = true;
+        canEat = false;
+        canRead = false;
+        canQuaff = false;
+        canWield = true;
+        canWear = true;
     }
 
     // METHODS
@@ -33,6 +33,6 @@ public class Armor extends Collectible {
      * @return this.armorClass
      */
     public int getArmorClass() {
-        return this.armorClass;
+        return armorClass;
     }
 }

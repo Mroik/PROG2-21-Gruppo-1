@@ -1,6 +1,6 @@
 package game;
 
-import base_classes;
+import base_classes.Food;
 
 /**
  * OVERVIEW: A banana is a fruit, it satiates the player's hunger by a small amount

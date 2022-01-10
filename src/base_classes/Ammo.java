@@ -1,12 +1,8 @@
 package base_classes;
 
-/**
- * OVERVIEW: Instances of subclasses of this class represent several foods that the player may eat
- */
-public abstract class Food extends Collectible implements Eatable, Stackable {
+public class Ammo extends Collectible implements Stackable {
 
     protected int quantity;
-    protected int foodValue;
     
     // CONSTRUCTOR
 
@@ -16,11 +12,11 @@ public abstract class Food extends Collectible implements Eatable, Stackable {
      * @param y coordinate y
      * @param quantity 
      */
-    protected Food(int x, int y, int quantity) {
+    protected Ammo(int x, int y, int quantity) {
         super(x, y);
         this.quantity = quantity;
-        render = ':';
-        canEat = true;
+        render = ';';
+        canEat = false;
         canRead = false;
         canQuaff = false;
         canWield = true;
@@ -30,18 +26,9 @@ public abstract class Food extends Collectible implements Eatable, Stackable {
     // METHODS
 
     /**
-     * 
      * @return this.quantity
      */
     public int getQuantity() {
         return quantity;
-    }
-
-    /**
-     * Get how much can this satiate the player
-     * @return this.foodValue
-     */
-    public int getFoodValue() {
-        return foodValue;
     }
 }
