@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
@@ -12,14 +14,18 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import base_classes.ColorPalette;
+import entities.Entity;
+import entities.Player;
 import map.Map;
 
-public class Rogue {
+public class Rogue implements KeyListener {
 
     /**
      * Its the JTextPane window responsible for the game display
      */
     private MainWindow mw;
+
+    private Player player;
     
     /**
      * Creates the Game Window and every loop
@@ -75,6 +81,10 @@ public class Rogue {
         frame.setVisible(true);
 
         this.map = mw.map;
+
+        gameSetup();
+        // this starts the game loop
+        frame.addKeyListener(this);
     }
 
     /**
@@ -96,6 +106,14 @@ public class Rogue {
         mw.updateLevel(level, x, y, c, color);
     }
 
+    public void updateLevel(Entity e) {
+        mw.updateLevel(Levels.ENTITY_LEVEL, e.getX(), e.getY(), e.getChar(), e.getColor());
+    }
+
+    public void clearLevel() {
+        mw.clearLevel();
+    }
+
     public void initRenderLoop(int fps) {
         mw.initRenderLoop(fps);
     }
@@ -114,6 +132,64 @@ public class Rogue {
 
     public int getCols() {
         return mw.getCols();
+    }
+
+    private void gameSetup() {
+        player = new Player(getCols() / 2, getRows() / 2);
+
+        updateLevel(player);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {}
+
+    // The real game loop
+    @Override
+    public void keyReleased(KeyEvent e) {
+        clearLevel();
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                moveUp();
+                break;
+            
+            case KeyEvent.VK_DOWN:
+                moveDown();
+                break;
+            
+            case KeyEvent.VK_RIGHT:
+                moveRight();
+                break;
+
+            case KeyEvent.VK_LEFT:
+                moveLeft();
+                break;
+        
+            default:
+                System.out.println("Typed not an arrow key: <" + e.getKeyChar() + ">");
+                break;
+        }
+
+        updateLevel(player);
+    }
+
+    private void moveUp() {
+        player.moveUp();
+    }
+
+    private void moveDown() {
+        player.moveDown();
+    }
+
+    private void moveRight() {
+        player.moveRight();
+    }
+
+    private void moveLeft() {
+        player.moveLeft();
     }
 
     public Map map;

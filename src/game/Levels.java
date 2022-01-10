@@ -7,6 +7,10 @@ import java.awt.Color;
 
 public class Levels {
 
+    public static final int OBJECT_LEVEL = 0;
+
+    public static final int ENTITY_LEVEL = 1;
+
     public Map<Coordinate, LevelPixel> map;
 
     public Levels(int nLevels, int rows, int cols) {

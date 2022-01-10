@@ -14,4 +14,6 @@ public class ColorPalette {
 
     public static final Color TUNNEL_COLOR = Color.GRAY;
 
+    public static final Color PLAYER_COLOR = Color.ORANGE;
+
 }

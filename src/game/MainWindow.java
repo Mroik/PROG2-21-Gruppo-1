@@ -250,4 +250,9 @@ public class MainWindow extends JTextPane {
 
         changeTime = new Date(System.currentTimeMillis());
     }
+
+    public void clearLevel() {
+        levels.clear();
+    }
+
 }
