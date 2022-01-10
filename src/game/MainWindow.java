@@ -15,6 +15,7 @@ import javax.swing.text.StyleContext;
 
 import base_classes.ColorPalette;
 import base_classes.Settings;
+import entities.Entity;
 import map.Map;
 
 public class MainWindow extends JTextPane {
@@ -106,8 +107,6 @@ public class MainWindow extends JTextPane {
         updateTime = new Date(System.currentTimeMillis());
 
         populateBase();
-
-        initRenderLoop(30);
     }
 
     private void initBlankWindow() {
@@ -139,6 +138,10 @@ public class MainWindow extends JTextPane {
 
     private void populateBase() {
         map = new Map();
+
+        for (CoordinatePixel p : map) {
+            updateBase(p.getX(), p.getY(), p.c, p.color);
+        }
     }
 
     public class RenderLoop implements Runnable {
@@ -249,6 +252,10 @@ public class MainWindow extends JTextPane {
         levels.addPixelLevel(level, x, y, c, color);
 
         changeTime = new Date(System.currentTimeMillis());
+    }
+
+    public void updateLevel(Entity e) {
+        updateLevel(Levels.ENTITY_LEVEL, e.getX(), e.getY(), e.getChar(), e.getColor());
     }
 
     public void clearLevel() {

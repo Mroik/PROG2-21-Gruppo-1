@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,7 +13,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import base_classes.ColorPalette;
-import entities.Entity;
 import entities.Player;
 import map.Map;
 
@@ -87,57 +85,11 @@ public class Rogue implements KeyListener {
         frame.addKeyListener(this);
     }
 
-    /**
-     * Modifies the base matrix with a character in the given position
-     * of the matrix. For reference the matrix has the top-left corner
-     * in ( 0 , 0 ) and the bottom-right in ( getCols() - 1 , getRows() - 1 ).
-     * The color can be null: in this case the old color will be used as
-     * the new one.
-     * @param x
-     * @param y
-     * @param c
-     * @param color
-     */
-    public void updateBase(int x, int y, char c, Color color) {
-        mw.updateBase(x, y, c, color);
-    }
-
-    public void updateLevel(int level, int x, int y, char c, Color color) {
-        mw.updateLevel(level, x, y, c, color);
-    }
-
-    public void updateLevel(Entity e) {
-        mw.updateLevel(Levels.ENTITY_LEVEL, e.getX(), e.getY(), e.getChar(), e.getColor());
-    }
-
-    public void clearLevel() {
-        mw.clearLevel();
-    }
-
-    public void initRenderLoop(int fps) {
-        mw.initRenderLoop(fps);
-    }
-
-    public void stopRenderLoop() {
-        mw.stopRenderLoop();
-    }
-
-    public void renderWindow() {
-        mw.renderWindow();
-    }
-
-    public int getRows() {
-        return mw.getRows();
-    }
-
-    public int getCols() {
-        return mw.getCols();
-    }
-
     private void gameSetup() {
-        player = new Player(getCols() / 2, getRows() / 2);
+        player = new Player(mw.getCols() / 2, mw.getRows() / 2);
 
-        updateLevel(player);
+        mw.updateLevel(player);
+        mw.renderWindow();
     }
 
     @Override
@@ -149,7 +101,7 @@ public class Rogue implements KeyListener {
     // The real game loop
     @Override
     public void keyReleased(KeyEvent e) {
-        clearLevel();
+        mw.clearLevel();
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
@@ -169,11 +121,13 @@ public class Rogue implements KeyListener {
                 break;
         
             default:
-                System.out.println("Typed not an arrow key: <" + e.getKeyChar() + ">");
+                System.out.println("Not typed an arrow key: " + e.getKeyCode() + " = <" + e.getKeyChar() + ">");
                 break;
         }
 
-        updateLevel(player);
+        mw.updateLevel(player);
+
+        mw.renderWindow();
     }
 
     private void moveUp() {
@@ -198,16 +152,6 @@ public class Rogue implements KeyListener {
     // TEST AND DEBUG
     //
     public static void main(String[] args) {
-        Rogue game = new Rogue("Rogue", 60, 240);
-
-        test(game);
-    }
-
-    public static void test(Rogue game) {
-        Map map = game.map;
-
-        for (CoordinatePixel p : map) {
-            game.updateBase(p.getX(), p.getY(), p.c, p.color);
-        }
+        new Rogue("Rogue", 60, 240);
     }
 }
