@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.GridBagConstraints;
@@ -50,6 +52,14 @@ public class MainFrame extends JFrame implements KeyListener {
         setVisible(false);
         add(sp, new GridBagConstraints());
         setVisible(true);
+
+        addFocusListener(new FocusListener(){
+            public void focusGained(FocusEvent e) {}
+
+            public void focusLost(FocusEvent e) {
+                e.getComponent().requestFocus();
+            }
+        });
     }
 
     public MainWindow getMainWindow() {
