@@ -13,6 +13,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
+import base_classes.ColorPalette;
 import map.Map;
 
 public class MainWindow extends JTextPane {
@@ -27,7 +28,9 @@ public class MainWindow extends JTextPane {
      */
     private AttributeSet defaultAttrSet;
 
-    private Color defaultColor;
+    private static final Color defaultColor = ColorPalette.TEXT_COLOR;
+
+    private static final Color defaultBackground = ColorPalette.BACKGROUND_COLOR;
 
     /**
      * The text base made of String but every string MUST BE
@@ -82,23 +85,24 @@ public class MainWindow extends JTextPane {
      * @param rows the number of lines of the text base
      * @param cols the length of the text base except the new-lines
      */
-    public MainWindow(final Color color, int rows, int cols) {
-        this.setEditable(false);
+    public MainWindow(int rows, int cols) {
+        setEditable(false);
 
-        this.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
-        this.setForeground(color);
-        this.defaultColor = color;
-        this.defaultAttrSet = this.getLogicalStyle().copyAttributes();
-        this.defaultColor = color;
+        setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+
+        setBackground(defaultBackground);
+        setForeground(defaultColor);
+
+        defaultAttrSet = getLogicalStyle().copyAttributes();
 
         this.rows = rows;
         this.cols = cols;
 
         levels = new Levels(3, rows, cols);
 
-        this.changeTime = new Date(System.currentTimeMillis());
-        this.initBlankWindow();
-        this.updateTime = new Date(System.currentTimeMillis());
+        changeTime = new Date(System.currentTimeMillis());
+        initBlankWindow();
+        updateTime = new Date(System.currentTimeMillis());
 
         populateBase();
 
@@ -119,11 +123,11 @@ public class MainWindow extends JTextPane {
 
         setText(text);
 
-        base = new ArrayList<>(this.rows);
-        for (int i = 0; i < this.rows; i++) {
-            base.add(new ArrayList<>(this.cols));
-            for (int j = 0; j < this.cols; j++) {
-                base.get(i).add(new Pixel(' ', this.defaultColor));
+        base = new ArrayList<>(rows);
+        for (int i = 0; i < rows; i++) {
+            base.add(new ArrayList<>(cols));
+            for (int j = 0; j < cols; j++) {
+                base.get(i).add(new Pixel(' ', defaultColor));
             }
         }
 
@@ -222,11 +226,11 @@ public class MainWindow extends JTextPane {
         try {
             updateTime = new Date(changeTime.getTime());
 
-            FastRenderer fr = new FastRenderer(this, this.base, this.levels);
+            FastRenderer fr = new FastRenderer(this, base, levels);
 
             try { TimeUnit.NANOSECONDS.sleep(1); } catch (Exception e) {}
 
-            this.setDocument(fr);
+            setDocument(fr);
         } catch (BadLocationException e) {
             System.out.println("EXCEPTION MESSAGE" + e);
         }

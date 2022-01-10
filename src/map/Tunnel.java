@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import base_classes.ColorPalette;
+import base_classes.EntityChars;
 import game.CoordinatePixel;
 
 public class Tunnel implements Iterable<CoordinatePixel> {
@@ -30,22 +32,28 @@ public class Tunnel implements Iterable<CoordinatePixel> {
 
         hallways.add(new Hallway(x, y, isHorizontal, length));
         if (isHorizontal) {
-            x += length - 1;
+            if (length > 0) {
+                x += length - 1;
+            } else {
+                x += length + 1;
+            }
         } else {
-            y += length - 1;
+            if (length > 0) {
+                y += length - 1;
+            } else {
+                y += length + 1;
+            }
         }
     }
 
-    private int nextHallway;
-
-    private int nextPixel;
-
     @Override
     public Iterator<CoordinatePixel> iterator() {
-        nextHallway = 0;
-        nextPixel = 0;
-
+       
         return new Iterator<CoordinatePixel>() {
+
+            private int nextHallway = 0;
+
+            private int nextPixel = 0;
 
             @Override
             public boolean hasNext() {
@@ -55,7 +63,7 @@ public class Tunnel implements Iterable<CoordinatePixel> {
                 if (nextHallway >= hallways.size())
                     return false;
                 
-                if (nextPixel > hallways.get(nextHallway).length() - 1) {
+                if (nextPixel > Math.abs(hallways.get(nextHallway).length()) - 1) {
                     return false;
                 }
 
@@ -68,13 +76,21 @@ public class Tunnel implements Iterable<CoordinatePixel> {
                 CoordinatePixel result = null;
 
                 if (h.isHorizontal()) {
-                    result = new CoordinatePixel(h.getX() + nextPixel, h.getY(), Maps.TUNNEL_CHAR, Maps.TUNNEL_COLOR);
+                    if (h.length() > 0) {
+                        result = new CoordinatePixel(h.getX() + nextPixel, h.getY(), EntityChars.TUNNEL_CHAR, ColorPalette.TUNNEL_COLOR);
+                    } else {
+                        result = new CoordinatePixel(h.getX() - nextPixel, h.getY(), EntityChars.TUNNEL_CHAR, ColorPalette.TUNNEL_COLOR);
+                    }
                 } else {
-                    result = new CoordinatePixel(h.getX(), h.getY() + nextPixel, Maps.TUNNEL_CHAR, Maps.TUNNEL_COLOR);
+                    if (h.length() > 0) {
+                        result = new CoordinatePixel(h.getX(), h.getY() + nextPixel, EntityChars.TUNNEL_CHAR, ColorPalette.TUNNEL_COLOR);
+                    } else {
+                        result = new CoordinatePixel(h.getX(), h.getY() - nextPixel, EntityChars.TUNNEL_CHAR, ColorPalette.TUNNEL_COLOR);
+                    }
                 }
 
                 nextPixel++;
-                if (nextPixel == h.length()) {
+                if (nextPixel == Math.abs(h.length())) {
                     nextHallway++;
                     nextPixel = 0;
                 }

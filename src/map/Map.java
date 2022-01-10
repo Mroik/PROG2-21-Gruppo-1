@@ -30,6 +30,7 @@ public class Map implements Iterable<CoordinatePixel> {
         tunnel.addHallway(true, 40);
         tunnel.addHallway(false, 15);
         tunnel.addHallway(true, 30);
+        tunnel.addHallway(false, -15);
         tunnels.add(tunnel);
     }
 

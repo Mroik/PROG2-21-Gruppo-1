@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import base_classes.ColorPalette;
 import map.Map;
 
 public class Rogue {
@@ -36,6 +37,8 @@ public class Rogue {
         // Window Settings
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
+        
+        frame.getContentPane().setBackground(ColorPalette.BACKGROUND_COLOR);
 
         // (Tested only in MacOS)
         // By creating the window without any content inside and by setting
@@ -55,7 +58,7 @@ public class Rogue {
         frame.setMinimumSize(windowSize);
 
         // Creates the game window
-        mw = new MainWindow(Color.black, rows, cols);
+        mw = new MainWindow(rows, cols);
         mw.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Creates the JTextPane container and makes it unscrollable
@@ -63,6 +66,7 @@ public class Rogue {
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setBorder(null);
+        sp.setBackground(ColorPalette.BACKGROUND_COLOR);
 
         // Hides the window, adds the container created above and
         // redraws the window
