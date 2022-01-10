@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import base_classes.ColorPalette;
 import base_classes.EntityChars;
-import game.Coordinate;
-import game.CoordinatePixel;
+import render.Coordinate;
+import render.CoordinatePixel;
 
 public class Room implements Iterable<CoordinatePixel> {
 

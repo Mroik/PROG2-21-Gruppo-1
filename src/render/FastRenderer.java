@@ -1,4 +1,4 @@
-package game;
+package render;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+
+import game.MainWindow;
 
 /**
  * Its the document that can be used my the MainWindow to
@@ -28,9 +30,8 @@ public class FastRenderer extends DefaultStyledDocument {
      * replace the window document, otherwise the rendering could be
      * very slow, both for little updates and entire rewrites
      * @param mw the MainWindow with its text and style matrix
-     * @throws BadLocationException
      */
-    public FastRenderer(MainWindow mw, List<List<Pixel>> matrix, Levels levels) throws BadLocationException {
+    public FastRenderer(MainWindow mw, List<List<Pixel>> matrix, Levels levels) {
         l = new ArrayList<>();
 
         Color currentColor = mw.getDefaultColor();
@@ -107,12 +108,15 @@ public class FastRenderer extends DefaultStyledDocument {
 
     /**
      * Writes into the document the list of ElementSpec
-     * @throws BadLocationException
      */
-    private void createDocument() throws BadLocationException {
+    private void createDocument() {
         ElementSpec[] inserts = new ElementSpec[l.size()];
         l.toArray(inserts);
 
-        super.insert(0, inserts);
+        try {
+            super.insert(0, inserts);
+        } catch (BadLocationException e) {
+            throw new BadLocationRuntimeException(e.getMessage());
+        }
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import game.CoordinatePixel;
+import render.CoordinatePixel;
 
 public class Map implements Iterable<CoordinatePixel> {
     

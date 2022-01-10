@@ -1,4 +1,4 @@
-package game;
+package render;
 
 public class Coordinate implements Comparable<Coordinate> {
     
@@ -33,8 +33,6 @@ public class Coordinate implements Comparable<Coordinate> {
             return false;
         
         Coordinate other = (Coordinate) o;
-
-        //System.out.println(this.x + " - " + other.x + " | " + this.y + " - " + other.y);
 
         return this.x == other.x && this.y == other.y;
     }

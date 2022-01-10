@@ -1,4 +1,4 @@
-package game;
+package render;
 
 import java.awt.Color;
 

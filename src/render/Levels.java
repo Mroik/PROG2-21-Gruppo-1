@@ -1,8 +1,7 @@
-package game;
+package render;
 
 import java.util.Map;
 import java.util.TreeMap;
-
 import java.awt.Color;
 
 public class Levels {

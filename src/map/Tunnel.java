@@ -6,7 +6,7 @@ import java.util.List;
 
 import base_classes.ColorPalette;
 import base_classes.EntityChars;
-import game.CoordinatePixel;
+import render.CoordinatePixel;
 
 public class Tunnel implements Iterable<CoordinatePixel> {
     

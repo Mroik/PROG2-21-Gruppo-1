@@ -9,7 +9,6 @@ import java.awt.Font;
 
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
@@ -17,76 +16,39 @@ import base_classes.ColorPalette;
 import base_classes.Settings;
 import entities.Entity;
 import map.Map;
+import render.CoordinatePixel;
+import render.FastRenderer;
+import render.Levels;
+import render.Pixel;
 
 public class MainWindow extends JTextPane {
 
-    /**
-     * Its used to create new Styles in the form of AttributeSets
-     */
     private static final StyleContext sc = StyleContext.getDefaultStyleContext();
 
-    /**
-     * The default style to be used
-     */
     private AttributeSet defaultAttrSet;
 
     private static final Color defaultColor = ColorPalette.TEXT_COLOR;
 
     private static final Color defaultBackground = ColorPalette.BACKGROUND_COLOR;
 
-    /**
-     * The text base made of String but every string MUST BE
-     * of length 1 like a char
-     */
     private List<List<Pixel>> base;
 
     private Levels levels;
 
-    /**
-     * The number of lines of the text base
-     */
     private int rows;
 
-    /**
-     * The length of every line excluding the new-lines
-     */
     private int cols;
 
-    /**
-     * The font size to be used.
-     * This should not be modified via, the danger is to
-     * destroy the text base
-     */
     private int fontSize = Settings.FONT_SIZE;
 
     private RenderLoop rl;
 
-    /**
-     * The thread reponsible for the window rendering loop
-     */
     private Thread renderer;
 
-    /**
-     * Tthe timestamp of the render event. Every time the render
-     * thread activates updates the timestamp. If the changeTime
-     * is past the updateTime the renderer knows that something has
-     * changed and perform the render, otherwise saves resources and
-     * does nothing
-     */
     private Date updateTime;
 
-    /**
-     * The timestamp of the change event. Every time a change is
-     * done to the base the timestamp changes
-     */
     private Date changeTime;
 
-    /**
-     * Creates a blank uneditable window full of white spaces.
-     * @param color the default color of the text base
-     * @param rows the number of lines of the text base
-     * @param cols the length of the text base except the new-lines
-     */
     public MainWindow(int rows, int cols) {
         setEditable(false);
 
@@ -134,7 +96,7 @@ public class MainWindow extends JTextPane {
         levels = new Levels(3, rows, cols);
     }
 
-    public Map map;
+    private Map map;
 
     private void populateBase() {
         map = new Map();
@@ -172,8 +134,6 @@ public class MainWindow extends JTextPane {
             stop = true;
         }
     }
-
-    // W IL MULTITHREADING
 
     public void initRenderLoop(int fps) {
         if (rl != null) {
@@ -227,17 +187,13 @@ public class MainWindow extends JTextPane {
             return;
         }
 
-        try {
-            updateTime = new Date(changeTime.getTime());
+        updateTime = new Date(changeTime.getTime());
 
-            FastRenderer fr = new FastRenderer(this, base, levels);
+        FastRenderer fr = new FastRenderer(this, base, levels);
 
-            try { TimeUnit.NANOSECONDS.sleep(1); } catch (Exception e) {}
+        try { TimeUnit.NANOSECONDS.sleep(1); } catch (Exception e) {}
 
-            setDocument(fr);
-        } catch (BadLocationException e) {
-            System.out.println("EXCEPTION MESSAGE" + e);
-        }
+        setDocument(fr);
     }
 
     public void updateBase(int x, int y, char c, Color color) {
