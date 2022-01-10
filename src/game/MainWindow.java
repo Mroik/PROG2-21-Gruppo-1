@@ -14,6 +14,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import base_classes.ColorPalette;
+import base_classes.Settings;
 import map.Map;
 
 public class MainWindow extends JTextPane {
@@ -55,7 +56,7 @@ public class MainWindow extends JTextPane {
      * This should not be modified via, the danger is to
      * destroy the text base
      */
-    private int fontSize = 12;
+    private int fontSize = Settings.FONT_SIZE;
 
     private RenderLoop rl;
 

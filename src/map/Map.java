@@ -21,13 +21,13 @@ public class Map implements Iterable<CoordinatePixel> {
     }
 
     private void populateRooms() {
-        rooms.add(new Room(10, 10, 50, 20));
-        rooms.add(new Room(100, 40, 20, 15));
+        rooms.add(new Room(10, 10, 60, 20));
+        rooms.add(new Room(160, 40, 18, 18));
     }
 
     private void populateTunnels() {
-        Tunnel tunnel = new Tunnel(140, 10);
-        tunnel.addHallway(true, 40);
+        Tunnel tunnel = new Tunnel(120, 10);
+        tunnel.addHallway(true, 20);
         tunnel.addHallway(false, 15);
         tunnel.addHallway(true, 30);
         tunnel.addHallway(false, -15);

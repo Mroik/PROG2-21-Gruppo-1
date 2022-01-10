@@ -38,7 +38,7 @@ public class Rogue {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         
-        frame.getContentPane().setBackground(ColorPalette.BACKGROUND_COLOR);
+        frame.getContentPane().setBackground(ColorPalette.FRAME_COLOR);
 
         // (Tested only in MacOS)
         // By creating the window without any content inside and by setting
@@ -122,7 +122,7 @@ public class Rogue {
     // TEST AND DEBUG
     //
     public static void main(String[] args) {
-        Rogue game = new Rogue("Rogue", 70, 240);
+        Rogue game = new Rogue("Rogue", 60, 240);
 
         test(game);
     }
